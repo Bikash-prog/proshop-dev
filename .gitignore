@@ -1,0 +1,7 @@
+# files
+.env
+package-lock.json
+/backend/seeder.js
+# folders
+/backend/data
+/node_modules
