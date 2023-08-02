@@ -6,6 +6,7 @@ import { generateToken } from "../utils/generateToken.js";
 import {
   validateAuthRequest,
   validateRegisterRequest,
+  validateGetUserByIdRequest,
 } from "../utils/validateUsersRequest.js";
 //@desc Auth user & get token
 //@route POST /api/users/login
@@ -72,7 +73,7 @@ const registerUser = asyncHandler(async (req, res) => {
 //@route POST /api/users/logout
 //@access Private
 const logoutUser = asyncHandler(async (req, res) => {
-  res.clearCookie("jwt", {
+  res.cookie("jwt", "", {
     httpOnly: true,
     expires: new Date(0),
   });
@@ -83,27 +84,71 @@ const logoutUser = asyncHandler(async (req, res) => {
 //@route GET /api/users/profile
 //@access Private
 const getUserProfile = asyncHandler(async (req, res) => {
-  res.send("get user profile");
+  const user = await User.findById(req.user._id);
+  if (user) {
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
 });
 
 //@desc update user profile
 //@route PUT /api/users/profile
 //@access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-  res.send("update user profile");
+  const user = await User.findById(req.user._id);
+  if (user) {
+    const { name, email, password } = req.body;
+    user.name = name || user.name;
+    user.email = email || user.email;
+    if (password) {
+      user.password = password;
+    }
+    const updatedUser = await user.save();
+    res.status(200).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
 });
 
 //@desc get all users
 //@route GET /api/users
 //@access Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-  res.send("get users");
+  const users = await User.find({});
+  if (users) {
+    res.status(200).json(users);
+  } else {
+    res.status(404);
+    throw new Error("Error in fetching users");
+  }
 });
 //@desc get user by id
 //@route GET /api/users/:id
 //@access Private/Admin
 const getUserById = asyncHandler(async (req, res) => {
-  res.send("get user by id");
+  const id = req.params.id;
+  //validate request
+  validateGetUserByIdRequest(req, res);
+  const user = await User.findById(id).select("-password");
+  if (user) {
+    res.status(200).json(user);
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
 });
 //@desc delete user
 //@route DELETE /api/users/:id

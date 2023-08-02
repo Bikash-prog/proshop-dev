@@ -37,4 +37,16 @@ const validateRegisterRequest = (req, res) => {
     throw new Error("Invalid email address");
   }
 };
-export { validateAuthRequest, validateRegisterRequest };
+
+const validateGetUserByIdRequest = (req, res) => {
+  if (req.params.id.length != 24) {
+    res.status(400); // bad request
+    throw new Error("user id is not valid");
+  }
+};
+
+export {
+  validateAuthRequest,
+  validateRegisterRequest,
+  validateGetUserByIdRequest,
+};
