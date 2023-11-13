@@ -70,7 +70,7 @@ const productSchema = new mongoose.Schema(
     },
     numReviews: {
       type: Number,
-      required: true,
+      // required: true,
       default: 0,
     },
     countInStock: {
