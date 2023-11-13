@@ -14,7 +14,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
     shippingPrice,
     totalPrice,
   } = req.body;
-
   if (orderItems && orderItems.length === 0) {
     res.status(400);
     throw new Error("No order items");
@@ -32,6 +31,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
     taxPrice,
     shippingPrice,
     totalPrice,
+    createdAt: Date.now(),
   });
 
   const createdOrder = await order.save();
@@ -109,7 +109,11 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 //@route GET /api/orders
 //@access Private/Admin
 const getAllOrders = asyncHandler(async (req, res) => {
-  res.send("get all orders");
+  const orders = await Order.find({}).populate(
+    "user", // populate() is like join in SQL
+    "name email"
+  );
+  res.status(200).json(orders);
 });
 
 export {

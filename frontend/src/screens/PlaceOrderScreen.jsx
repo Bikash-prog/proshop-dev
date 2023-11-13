@@ -35,7 +35,6 @@ const PlaceOrderScreen = () => {
         shippingPrice: cart.shippingPrice,
         totalPrice: cart.totalPrice,
       }).unwrap();
-      console.log(res);
       dispatch(clearCartItems());
       navigate(`/order/${res._id}`);
     } catch (err) {
@@ -133,7 +132,7 @@ const PlaceOrderScreen = () => {
                 <Button
                   type="button"
                   className="btn-block"
-                  disabled={cart.cartItems.length === 0}
+                  disabled={cart.cartItems.length === 0 ? true : false}
                   onClick={placeOrderHandler}
                 >
                   Place Order
