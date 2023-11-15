@@ -1,19 +1,28 @@
 import { Row, Col, Alert } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Product from "../components/Product.jsx";
 import Loader from "../components/Loader.jsx";
 import Message from "../components/Message.jsx";
 import { useGetProductsQuery } from "../slices/productsApiSlice.js";
 import Paginate from "../components/Paginate.jsx";
+import ProductCarousel from "../components/ProductCarousel.jsx";
+import Meta from "../components/Meta.jsx";
 const HomeScreen = () => {
-  const { pageNumber } = useParams();
+  const { pageNumber, keyword } = useParams();
   const {
     data: response,
     isLoading,
     error,
-  } = useGetProductsQuery({ pageNumber });
+  } = useGetProductsQuery({ keyword, pageNumber });
   return (
     <>
+      {!keyword ? (
+        <ProductCarousel />
+      ) : (
+        <Link to="/" className="btn btn-light mb-4">
+          Go Back
+        </Link>
+      )}
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -30,7 +39,11 @@ const HomeScreen = () => {
               </Col>
             ))}
           </Row>
-          <Paginate pages={response.pages} page={response.page} />
+          <Paginate
+            pages={response.pages}
+            page={response.page}
+            keyword={keyword ? keyword : ""}
+          />
         </>
       )}
     </>
