@@ -1,4 +1,4 @@
-import { Row, Col, Alert } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Product from "../components/Product.jsx";
 import Loader from "../components/Loader.jsx";
@@ -6,7 +6,6 @@ import Message from "../components/Message.jsx";
 import { useGetProductsQuery } from "../slices/productsApiSlice.js";
 import Paginate from "../components/Paginate.jsx";
 import ProductCarousel from "../components/ProductCarousel.jsx";
-import Meta from "../components/Meta.jsx";
 const HomeScreen = () => {
   const { pageNumber, keyword } = useParams();
   const {

@@ -5,7 +5,6 @@ import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 import {
-  getUserDetailsQuery,
   useGetUserDetailsQuery,
   useUpdateUserMutation,
 } from "../../slices/usersApiSlice";

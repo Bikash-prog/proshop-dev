@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, createRoutesFromChildren, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import CheckoutSteps from "../components/CheckoutSteps";
@@ -22,7 +22,12 @@ const PlaceOrderScreen = () => {
     } else if (!cart.savePaymentMethod) {
       navigate("/payment");
     }
-  }, [cart.paymentMethod, cart.shippingAddress.address, navigate]);
+  }, [
+    cart.paymentMethod,
+    cart.savePaymentMethod,
+    cart.shippingAddress.address,
+    navigate,
+  ]);
 
   const placeOrderHandler = async () => {
     try {
