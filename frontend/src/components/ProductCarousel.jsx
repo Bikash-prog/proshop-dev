@@ -6,9 +6,7 @@ import Loader from "./Loader";
 import { Image, Carousel } from "react-bootstrap";
 const ProductCarousel = () => {
   const { data: products, isLoading, error } = useGetTopProductsQuery();
-  return isLoading ? (
-    <Loader />
-  ) : error ? (
+  return error ? (
     <Message variant="danger">{error}</Message>
   ) : (
     <Carousel pause="hover" className="bg-primary mb-4">
